@@ -34,16 +34,16 @@ Make sure you have installed:
    git clone https://github.com/your-username/farmmarket.git
    cd farmmarket
    ```
-
-2. **Create and activate virtual environment:
-    ```python3 -m venv venv
-    source venv/bin/activate
-    ```
-
-3. **Install the required dependencies:
-    Just run this code
-    ```pip install -r requirements.txt
-    ```
+2. **Create and activate virtual environment**:
+   ```
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+3. **Install the required dependencies**:
+   Just run this code
+   ```
+   pip install -r requirements.txt
+   ```
 
 The project folder is called "farmer_market" and the app is called "products". THIS IS WHERE YOU NEED TO CREATE YOUR ENDPOINTS. in views.py you need to add all API endpoints
 
