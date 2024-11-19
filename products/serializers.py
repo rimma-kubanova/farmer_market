@@ -4,7 +4,7 @@ from .models import Product, FarmerProduct
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['id', 'name', 'description', 'price', 'created_at', 'updated_at']
+        fields = ['id', 'name', 'description', 'price', 'category', 'created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at']
 
 class FarmerProductSerializer(serializers.ModelSerializer):
@@ -19,4 +19,5 @@ class ProductDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['id', 'name', 'description', 'price', 'created_at', 'updated_at', 'farmer_products']
+        fields = ['id', 'name', 'description', 'price', 'category', 'created_at', 'updated_at', 'farmer_products']
+
