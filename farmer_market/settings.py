@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-ogjhrp0w&^t^0qv=!hl8mf$tq4jtcd1m&ts!*1bg6hu5^$mh98
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+AUTH_USER_MODEL = 'users.CustomUser'
 
 # Application definition
 
@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'products'
+    'products',
+    'users'
 ]
 
 MIDDLEWARE = [
@@ -51,6 +52,15 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'farmer_market.urls'
+
+REST_FRAMEWORK = { 
+    'DEFAULT_AUTHENTICATION_CLASSES': [ 
+        'rest_framework.authentication.BasicAuthentication', 
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}
 
 TEMPLATES = [
     {
