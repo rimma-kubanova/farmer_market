@@ -1,4 +1,4 @@
-# CSCI 390 - Farmer Market System
+# CSCI 361 - Farmer Market System
 
 The Farmer Market System is designed to provide a digital platform where farmers can list and
 manage their agricultural products, including vegetables, fruits, seeds, and farming equipment, and
