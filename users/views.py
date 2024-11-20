@@ -1,5 +1,5 @@
 from .models import User
-from .serializers import RegisterSerializer, LoginSerializer
+from .serializers import RegisterSerializer, LoginSerializer, BuyerProfileSerializer, FarmerProfileSerializer
 from django.contrib.auth import authenticate, login
 from rest_framework.permissions import AllowAny
 from rest_framework import status
@@ -37,4 +37,26 @@ class UserLogoutView(APIView):
         token.delete()
 
         return Response({'detail': 'Successfully logged out.'})
+
+class UpdateBuyerProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request):
+        profile = request.user.buyer_profile
+        serializer = BuyerProfileSerializer(profile, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Profile updated successfully', 'data': serializer.data})
+        return Response(serializer.errors, status=400)
+
+class UpdateFarmerProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request):
+        profile = request.user.farmer_profile
+        serializer = FarmerProfileSerializer(profile, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Profile updated successfully', 'data': serializer.data})
+        return Response(serializer.errors, status=400)
 

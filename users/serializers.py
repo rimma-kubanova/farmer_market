@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User
+from .models import User, BuyerProfile, FarmerProfile
 from django.contrib.auth import authenticate
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -34,3 +34,13 @@ class LoginSerializer(serializers.Serializer):
                 return user
             raise serializers.ValidationError("Invalid credentials")
         return user
+
+class BuyerProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BuyerProfile
+        fields = ['delivery_address']
+
+class FarmerProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FarmerProfile
+        fields = ['document_id']

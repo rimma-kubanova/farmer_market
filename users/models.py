@@ -9,10 +9,16 @@ class User(AbstractUser):
     )
     role = models.CharField(max_length=15, choices=ROLE_CHOICES)
 
-# class BuyerProfile(models.Model):
-#     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='buyer_profile')
-#     # preferred_categories = models.TextField()
+class BuyerProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='buyer_profile')
+    delivery_address = models.TextField(blank=True, null=True)
 
-# class FarmerProfile(models.Model):
-#     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='farmer_profile')
-#     # farm_size = models.DecimalField(max_digits=10, decimal_places=2)
+    def __str__(self):
+        return f"Buyer Profile: {self.user.username}"
+
+class FarmerProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='farmer_profile')
+    document_id = models.CharField(max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        return f"Farmer Profile: {self.user.username}"
