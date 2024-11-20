@@ -20,6 +20,7 @@ class ProductSerializer(serializers.ModelSerializer):
             )
         return data
 
+
 class FarmerProductSerializer(serializers.ModelSerializer):
     farmer_name = serializers.CharField(source='farmer.username', read_only=True)
 
@@ -34,3 +35,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
         model = Product
         fields = ['id', 'name', 'description', 'price', 'category', 'created_at', 'updated_at', 'farmer_products']
 
+class FarmerProductCreateUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FarmerProduct
+        fields = ['id', 'product', 'available_quantity', 'price']
