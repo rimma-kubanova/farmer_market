@@ -9,24 +9,28 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+import dj_database_url
+from dotenv import load_dotenv
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+load_dotenv()
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+SECRET = os.environ.get("SECRET_KEY")
 SECRET_KEY = 'django-insecure-ogjhrp0w&^t^0qv=!hl8mf$tq4jtcd1m&ts!*1bg6hu5^$mh98'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = []
-AUTH_USER_MODEL = 'users.CustomUser'
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
+AUTH_USER_MODEL = 'users.User'
 
 # Application definition
 
@@ -37,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework.authtoken',
     'rest_framework',
     'products',
     'users'
@@ -85,14 +90,22 @@ WSGI_APPLICATION = 'farmer_market.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
-
+DATABASES = {
+    'default': dj_database_url.config(
+        default=DATABASE_URL, 
+        conn_max_age=600, 
+        ssl_require=True
+    ),
+}
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
