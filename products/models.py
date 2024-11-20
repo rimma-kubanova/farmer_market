@@ -11,6 +11,15 @@ class Product(models.Model):
         ('bread', 'Bread'),
     ]
 
+    PRODUCT_NAME_CHOICES = {
+        'fruits': ['Banana', 'Apple', 'Orange', 'Grape', 'Mango'],
+        'vegetables': ['Carrot', 'Potato', 'Onion', 'Cucumber', 'Pepper'],
+        'mushroom': ['Button Mushroom', 'Portobello', 'Shiitake', 'Chanterelle', 'Enoki'],
+        'dairy': ['Milk', 'Cheese', 'Butter', 'Yogurt', 'Cream'],
+        'oats': ['Oatmeal', 'Granola', 'Muesli', 'Oat Bran', 'Steel-Cut Oats'],
+        'bread': ['Sourdough', 'Baguette', 'Ciabatta', 'Rye Bread', 'Whole Wheat Bread'],
+    }
+
     name = models.CharField(max_length=255)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
