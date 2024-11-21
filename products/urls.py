@@ -3,6 +3,8 @@ from rest_framework.routers import DefaultRouter
 from .views import (
     ProductListView,
     ProductDetailView,
+    ProductCreateView,
+    ProductUpdateView,
     FarmerProductListView,
     FarmerProductCreateView,
     FarmerProductUpdateView,
@@ -17,6 +19,8 @@ urlpatterns = [
     path('', include(router.urls)),
     path('products/', ProductListView.as_view(), name='product-list'),
     path('products/<int:pk>/', ProductDetailView.as_view(), name='product-detail'),
+    path('products/create/', ProductCreateView.as_view(), name='product-create'),
+    path('products/<int:pk>/update/', ProductUpdateView.as_view(), name='product-update'),
 
     path('my-products/', FarmerProductListView.as_view(), name='farmer-product-list'),
     path('my-products/create/', FarmerProductCreateView.as_view(), name='farmer-product-create'),
