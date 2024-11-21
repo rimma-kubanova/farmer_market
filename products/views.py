@@ -51,21 +51,21 @@ class ProductUpdateView(generics.UpdateAPIView):
 
 class FarmerProductListView(generics.ListAPIView):
     serializer_class = FarmerProductSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated, IsFarmer] 
 
     def get_queryset(self):
         return FarmerProduct.objects.filter(farmer=self.request.user)
 
 class FarmerProductCreateView(generics.CreateAPIView):
     serializer_class = FarmerProductCreateUpdateSerializer
-    permission_classes = [AllowAny] 
+    permission_classes = [IsAuthenticated, IsFarmer]
 
     def perform_create(self, serializer):
         serializer.save(farmer=self.request.user)
 
 class FarmerProductUpdateView(generics.UpdateAPIView):
     serializer_class = FarmerProductCreateUpdateSerializer
-    permission_classes = [IsAuthenticated, IsFarmer] 
+    permission_classes = [IsAuthenticated, IsFarmer]
 
     def get_queryset(self):
         return FarmerProduct.objects.filter(farmer=self.request.user)
