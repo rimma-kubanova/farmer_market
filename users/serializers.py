@@ -43,7 +43,7 @@ class BuyerProfileSerializer(serializers.ModelSerializer):
 class FarmerProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = FarmerProfile
-        fields = ['document_id']
+        fields = ['document_id', 'farm_size', 'farm_location']
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

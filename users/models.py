@@ -18,6 +18,8 @@ class BuyerProfile(models.Model):
 
 class FarmerProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='farmer_profile')
+    farm_size = models.PositiveIntegerField(default=0)
+    farm_location = models.CharField(max_length=255, blank=True, null=True)
     document_id = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
