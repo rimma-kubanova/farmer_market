@@ -1,12 +1,14 @@
 from .models import User
-from .serializers import RegisterSerializer, LoginSerializer, BuyerProfileSerializer, FarmerProfileSerializer
+from .serializers import RegisterSerializer, LoginSerializer, BuyerProfileSerializer, FarmerProfileSerializer, UserSerializer
 from django.contrib.auth import authenticate, login
 from rest_framework.permissions import AllowAny
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.decorators import action
+from rest_framework.viewsets import ModelViewSet
 
 class RegisterView(APIView):
     permission_classes = [AllowAny] 
@@ -60,3 +62,22 @@ class UpdateFarmerProfileView(APIView):
             return Response({'message': 'Profile updated successfully', 'data': serializer.data})
         return Response(serializer.errors, status=400)
 
+
+class UserViewSet(ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [AllowAny]
+
+    def get_permissions(self):
+        # Allow admin users to perform all actions; non-admins can only view users
+        if self.action in ['list', 'retrieve']:
+            self.permission_classes = [AllowAny]
+        elif self.action in ['create', 'update', 'partial_update', 'destroy']:
+            self.permission_classes = [IsAdminUser]
+        return super().get_permissions()
+
+    @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated])
+    def me(self, request):
+        """Get the current logged-in user's details"""
+        serializer = self.get_serializer(request.user)
+        return Response(serializer.data)
