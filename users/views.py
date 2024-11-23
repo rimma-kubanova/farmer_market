@@ -26,6 +26,11 @@ class LoginView(APIView):
         if serializer.is_valid():
             user = serializer.validated_data
             token, created = Token.objects.get_or_create(user=user)
+            if user.is_superuser:
+                return Response(
+                    {"token": token.key, "role": user.role, "message": "Superuser logged in successfully"},
+                    status=status.HTTP_200_OK
+                )
             return Response({"token": token.key, "role": user.role}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -88,3 +93,22 @@ class UserViewSet(ModelViewSet):
         if role:
             return self.queryset.filter(role=role)
         return super().get_queryset()
+    
+    @action(detail=False, methods=['post'], permission_classes=[AllowAny])
+    def register_superuser(self, request):
+        """Create a new superuser."""
+        data = request.data
+        password = data.get("password")
+
+        if not password:
+            return Response({"error": "Password is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = User.objects.create_superuser(
+                username=data.get("username"),
+                email=data.get("email"),
+                password=password
+            )
+            return Response({"message": f"Superuser '{user.username}' created successfully."}, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
