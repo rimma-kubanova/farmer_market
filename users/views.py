@@ -81,3 +81,10 @@ class UserViewSet(ModelViewSet):
         """Get the current logged-in user's details"""
         serializer = self.get_serializer(request.user)
         return Response(serializer.data)
+
+    def get_queryset(self):
+        # Optionally filter by role if a query parameter is provided
+        role = self.request.query_params.get('role')
+        if role:
+            return self.queryset.filter(role=role)
+        return super().get_queryset()

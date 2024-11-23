@@ -46,8 +46,11 @@ class FarmerProfileSerializer(serializers.ModelSerializer):
         fields = ['document_id', 'farm_size', 'farm_location']
 
 class UserSerializer(serializers.ModelSerializer):
+    buyer_profile = BuyerProfileSerializer(read_only=True)
+    farmer_profile = FarmerProfileSerializer(read_only=True)
+
     class Meta:
         model = User
-        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'role', 'is_active']
+        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'role', 'is_active', 'buyer_profile', 'farmer_profile']
         read_only_fields = ['id']
         
