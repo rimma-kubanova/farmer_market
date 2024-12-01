@@ -1,6 +1,7 @@
-from .models import User
+from .models import User, FarmerProfile
 from .serializers import RegisterSerializer, LoginSerializer, BuyerProfileSerializer, FarmerProfileSerializer, UserSerializer
 from django.contrib.auth import authenticate, login
+from users.utils import notify_farmer_approval
 from rest_framework.permissions import AllowAny
 from rest_framework import status
 from rest_framework.response import Response
@@ -59,7 +60,7 @@ class UpdateBuyerProfileView(APIView):
 class UpdateFarmerProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def put(self, request):
+    def patch(self, request):
         profile = request.user.farmer_profile
         serializer = FarmerProfileSerializer(profile, data=request.data, partial=True)
         if serializer.is_valid():
@@ -112,3 +113,22 @@ class UserViewSet(ModelViewSet):
             return Response({"message": f"Superuser '{user.username}' created successfully."}, status=status.HTTP_201_CREATED)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+class ApproveFarmerView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def post(self, request, farmer_id):
+        try:
+            user = User.objects.get(id=farmer_id)
+            if user.role != 'farmer':
+                return Response({'error': 'User is not a farmer.'}, status=400)
+
+            farmer_profile = user.farmer_profile
+            farmer_profile.is_approved = True
+            farmer_profile.save()
+            
+            # notify_farmer_approval(farmer_profile)
+            return Response({'message': f"Farmer {farmer_profile.user.username} approved."})
+        except FarmerProfile.DoesNotExist:
+            return Response({'error': 'Farmer profile not found.'}, status=404)
+

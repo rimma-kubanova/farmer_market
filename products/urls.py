@@ -9,6 +9,11 @@ from .views import (
     FarmerProductCreateView,
     FarmerProductUpdateView,
     FarmerProductDeleteView,
+    OrderListView,
+    CartRemoveView,
+    AddToCartView,
+    ViewCartView,
+    CheckoutCartView
 )
 
 router = DefaultRouter()
@@ -28,4 +33,10 @@ urlpatterns = [
     path('my-products/<int:pk>/delete/', FarmerProductDeleteView.as_view(), name='farmer-product-delete'),
     # path('product-names/<str:category>/', ProductNamesByCategoryAPIView.as_view(), name='product-names-by-category'),
     
+    path('cart/add/', AddToCartView.as_view(), name='add-to-cart'),
+    path('cart/', ViewCartView.as_view(), name='view-cart'),     
+    path('cart/checkout/', CheckoutCartView.as_view(), name='checkout-cart'),
+    path('cart/remove/<int:farmer_product_id>/', CartRemoveView.as_view(), name='cart-remove'),
+    
+    path('order/', OrderListView.as_view(), name='order-list')
 ]

@@ -12,13 +12,14 @@ from rest_framework.permissions import BasePermission
 
 class IsFarmer(BasePermission):
     """
-    Allow access only to users of type 'farmer'.
+    Allows access only to approved farmers.
     """
-    
     def has_permission(self, request, view):
-        if request.user.is_superuser or request.user.is_staff:
+        if request.user.is_superuser:
             return True
-        return request.user.is_authenticated and request.user.role == 'farmer'
+        if request.user.is_authenticated and request.user.role == 'farmer':
+            return hasattr(request.user, 'farmer_profile') and request.user.farmer_profile.is_approved
+        return True
 
 class IsBuyerOrReadOnly(BasePermission):
     """
