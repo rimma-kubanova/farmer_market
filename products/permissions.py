@@ -18,7 +18,8 @@ class IsFarmer(BasePermission):
         if request.user.is_superuser:
             return True
         if request.user.is_authenticated and request.user.role == 'farmer':
-            return hasattr(request.user, 'farmer_profile') and request.user.farmer_profile.is_approved
+            return True
+            # return hasattr(request.user, 'farmer_profile') and request.user.farmer_profile.is_approved
         return True
 
 class IsBuyerOrReadOnly(BasePermission):
